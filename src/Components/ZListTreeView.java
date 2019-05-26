@@ -2,6 +2,7 @@ package Components;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -23,12 +24,12 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-public class JTreeExample extends JPanel
+public class ZListTreeView extends JPanel
 {
     private JTree tree;
     private JLabel selectedLabel;
-     
-    public JTreeExample()
+    
+    public ZListTreeView()
     {
     	
         //create the root node
@@ -141,12 +142,15 @@ public class JTreeExample extends JPanel
             @Override
             public void run() {
             	JFrame temp = new JFrame();
-            	temp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            	temp.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
             	temp.setTitle("JTree Example");
-            	
-            	temp.add(new JTreeExample());
+            	temp.setResizable(false);
+            	temp.setLayout(new BorderLayout());
+            
             	temp.setVisible(true);
-            	temp.setSize(500, 100);
+            	temp.setSize(800, 600);
+            	temp.setLocation(new Point(100, 50));
+            	temp.add(new ZListTreeView(),BorderLayout.WEST);
             }
         });
     }       
