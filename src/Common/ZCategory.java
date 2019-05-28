@@ -1,40 +1,67 @@
 package Common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ZCategory {
 
-	private int zcatId; // Store category Id
-	private String zcatName; // Store Category Name
-	
+	private int catId; // Store category Id
+	private String catName; // Store Category Name
+	private List<ZCategory> catChild;
+
 	// Constructor
-	public ZCategory(int zcatId, String zcatName) {
+	public ZCategory(int catId, String catName,List<ZCategory> catChild) {
 		super();
-		this.zcatId = zcatId;
-		this.zcatName = zcatName;
+		this.catId = catId;
+		this.catName = catName;
+		this.catChild = catChild;
+	} // end of Constructor
+	
+	public ZCategory() {
+		
+		this.catChild = new ArrayList<>();
 	} // end of Constructor
 	
 	// Setter and Getter
-	public int getZcatId() {
-		return zcatId;
+	public int getCatId() {
+		return catId;
 	}
 
-	public void setZcatId(int zcatId) {
-		this.zcatId = zcatId;
+	public void setCatId(int zcatId) {
+		this.catId = zcatId;
 	}
 
-	public String getZcatName() {
-		return zcatName;
+	public String getCatName() {
+		return catName;
 	}
 
-	public void setZcatName(String zcatName) {
-		this.zcatName = zcatName;
+	public void setCatName(String zcatName) {
+		this.catName = zcatName;
+	}
+	public List<ZCategory> getCatChild() {
+		return catChild;
+	}
+
+	public void setCatChild(List<ZCategory> catChild) {
+		this.catChild = catChild;
 	}
 	
+	public void addCatChild(ZCategory catChild) {
+		boolean hasChild = false;
+		
+		for (ZCategory zCategory : this.catChild) {
+			if(catChild.getCatId() == zCategory.getCatId())
+				return;
+		}
+		this.catChild.add(catChild);
+	}
+
 
 	// override toString Method
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return this.getZcatName();
+		return this.getCatName();
 	} // end of ToString
 	
 }
