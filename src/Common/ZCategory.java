@@ -43,6 +43,10 @@ public class ZCategory {
 	}
 
 	public void setCatChild(List<ZCategory> catChild) {
+		if(catChild == null){
+			this.catChild = new ArrayList<>();
+		}
+		else
 		this.catChild = catChild;
 	}
 	

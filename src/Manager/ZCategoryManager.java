@@ -3,7 +3,6 @@ package Manager;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import Common.Commons;
 import Common.ZCategory;
 import txtFileManager.TFileManeger;;
@@ -26,6 +25,40 @@ public class ZCategoryManager {
 	}
 
 	// Methods
+	/**
+	 * insert new category
+	 */
+	public void insert(ZCategory category) {
+		ZCategory x = this.selectCategory(category.getCatId());
+		if(x == null) // Don't Add Duplicate Category
+		{
+		String newRow = categoryToString(category);
+		fm.AppendRow(newRow);
+		}
+	}
+
+	/**
+	 * update category
+	 */
+	public void update(ZCategory category) {
+		int index = fm.getFirstRowIndexStartWith(String.valueOf(category.getCatId()));
+		fm.UpdateRow(index, categoryToString(category));
+	}
+
+	/**
+	 * delete category
+	 */
+	public void delete(ZCategory category) {
+		int index = fm.getFirstRowIndexStartWith(String.valueOf(category.getCatId()));
+		fm.deleteRow(index);
+	}
+
+	/**
+	 * Clear all Category From Storage
+	 */
+	public void Clear() {
+		fm.Clear();
+	}
 
 	/**
 	 * return instance of ZCategoryManager class. Singleton pattern
@@ -47,15 +80,22 @@ public class ZCategoryManager {
 		String output = "";
 
 		output += category.getCatId() + Commons.SPLITTER_LEVEL1 + category.getCatName();
-		if (category.getCatChild().isEmpty() == false) {
+		if (category.getCatChild() != null && category.getCatChild().size() != 0) {
 			output += Commons.SPLITTER_LEVEL1;
 		}
-		
+
 		boolean addSplitter = false;
-		
+
 		for (ZCategory catItem : category.getCatChild()) {
 			if (addSplitter) {
-				output += Commons.SPLITTER_LEVEL2 + category.getCatId(); // if item number > 1 => add splitter
+				output += Commons.SPLITTER_LEVEL2 + category.getCatId(); // if
+																			// item
+																			// number
+																			// >
+																			// 1
+																			// =>
+																			// add
+																			// splitter
 			} // end of if
 			else {
 				output += category.getCatId();
@@ -64,50 +104,56 @@ public class ZCategoryManager {
 		}
 		return output;
 	} // end of CategoryToString
-	
+
 	/**
-	 * StringToCategory -- convert string To Category Class 
-	 *  main Use = in retrieve data from file
-	 * category Data in file
+	 * StringToCategory -- convert string To Category Class main Use = in
+	 * retrieve data from file category Data in file
 	 */
-	private ZCategory StringToCategory(String categoryData) {
+	private ZCategory stringToCategory(String categoryData) {
 		ZCategory category = new ZCategory();
 		String[] tmp = categoryData.split(Commons.SPLITTER_LEVEL1);
-		try{
+		try {
 			category.setCatId(Integer.parseInt(tmp[0]));
 			category.setCatName(tmp[1]);
-			
-			if(tmp.length>2){ // add childs
+
+			if (tmp.length > 2) { // add childs
 				String[] childTmp = tmp[2].split(Commons.SPLITTER_LEVEL2);
-			for (String str : childTmp) {
-					category.addCatChild(this.SelectCategory(Integer.parseInt(str)));
+				for (String str : childTmp) {
+					category.addCatChild(this.selectCategory(Integer.parseInt(str)));
 				}
 			} // end of if
-		}catch(Exception ex ){
+		} catch (Exception ex) {
 			return null;
 		}
-		
+
 		return category;
 	} // end of CategoryToString
 
-/**
- * get all category
- */
+	/**
+	 * get all category
+	 */
 	public List<ZCategory> SelectAll() {
 		List<ZCategory> Categories = new ArrayList<>();
 		String lines[];
 		lines = fm.getArray();
 		for (String string : lines) {
-			Categories.add(StringToCategory(string));
-		}		
-		return Categories;		
+			Categories.add(stringToCategory(string));
+		}
+		return Categories;
 	}
-	
-	public ZCategory SelectCategory(int id) {	
+
+	/**
+	 * Select One Category
+	 * 
+	 * @param id
+	 *            Id of the category
+	 * @return
+	 */
+	public ZCategory selectCategory(int id) {
 		List<String> lines = fm.getRowsStartWith(String.valueOf(id));
-		try{
-			return this.StringToCategory(lines.get(0));
-		}catch(Exception ex){
+		try {
+			return this.stringToCategory(lines.get(0));
+		} catch (Exception ex) {
 			return null;
 		}
 	}
