@@ -23,6 +23,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
@@ -140,11 +141,14 @@ public class ZListTreeView extends JPanel {
 
 	public void resetListMember(int i ) {
 		ZCategory cat = new ZCategory();
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode)this.tree.getModel().getRoot();
+		 DefaultTreeModel model = (DefaultTreeModel) this.tree.getModel();
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
 		root.removeAllChildren();
 		for (ZCategory zCategory : categories) {
 			setTreeItem(root, zCategory); // add category to root
 		}
+		model.setRoot(root);
+		
 		
 	}
 	public void resetListMember( ) {
